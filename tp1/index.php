@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
-    // Verificacao de password segura com password_verify
     if ($user && password_verify($senha, $user['senha'])) { 
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['nome'] = $user['nome'];
@@ -21,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: dashboard.php");
         exit;
     } else {
-        $erro = "Credenciais invalidas!";
+        $erro = "Credenciais inválidas!";
     }
 }
 ?>
@@ -29,25 +28,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Login | IPCA</title>
+    <title>Login | IPCA Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background: #f1f5f9; display: flex; align-items: center; justify-content: center; height: 100vh; }
-        .login-card { width: 400px; padding: 2rem; border-radius: 15px; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <div class="login-card">
-        <h3 class="text-center mb-4">IPCA Portal</h3>
-        <?php if($erro): ?> <div class="alert alert-danger small"><?= $erro ?></div> <?php endif; ?>
-        <form method="POST">
-            <div class="mb-3"><label>Email</label><input type="email" name="email" class="form-control" required></div>
-            <div class="mb-3"><label>Senha</label><input type="password" name="senha" class="form-control" required></div>
-            <button type="submit" class="btn btn-primary w-100 mb-3">Entrar</button>
-            <div class="text-center">
-                <a href="registar.php" class="text-decoration-none">Criar Conta de Aluno</a>
-            </div>
-        </form>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h3 class="auth-title">Bem-vindo ao IPCA</h3>
+            <?php if($erro): ?> <div class="alert alert-danger mb-4"><i class="fa-solid fa-circle-exclamation me-2"></i><?= $erro ?></div> <?php endif; ?>
+            
+            <form method="POST">
+                <div class="mb-4">
+                    <label class="form-label">Email Institucional</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="fa-regular fa-envelope"></i></span>
+                        <input type="email" name="email" class="form-control border-start-0 ps-0" placeholder="exemplo@ipca.pt" required>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Palavra-passe</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" name="senha" class="form-control border-start-0 ps-0" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 mb-4 py-2 mt-2">Entrar no Portal <i class="fa-solid fa-arrow-right ms-2"></i></button>
+                <div class="text-center mt-3">
+                    <span class="text-muted">Ainda não tem conta?</span> <a href="registar.php" class="auth-link">Criar Conta de Aluno</a>
+                </div>
+            </form>
+        </div>
     </div>
+    <script src="assets/js/theme.js"></script>
 </body>
 </html>
